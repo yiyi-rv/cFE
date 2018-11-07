@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 PROJECT_DIR=`pwd`
 JSON_OUT=`pwd`/errors.json
 COMPILER="kcc -fissue-report=${JSON_OUT}"
