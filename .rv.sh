@@ -3,7 +3,9 @@ set -x
 PROJECT_DIR=`pwd`
 JSON_OUT=`pwd`/errors.json
 REPORT_PATH="`pwd`/report"
-COMPILER="kcc"
+export CC=kcc
+export CFLAGS="-fissue-report=$JSON_OUT"
+export LDFLAGS="$CFLAGS"
 
 # Prepare to build the project
 rm -rf osal
@@ -20,7 +22,7 @@ cd rv_build
 
 # Start to build project
 export SIMULATION=native
-cmake -DCMAKE_C_COMPILER="${COMPILER}" -DCMAKE_C_FLAGS="-fissue-report=${JSON_OUT}" -DENABLE_UNIT_TESTS=TRUE --build ../cfe
+cmake -DENABLE_UNIT_TESTS=TRUE --build ../cfe
 make -j `nproc` mission-all
 cd native/osal/unit-tests/
 make -j`nproc`
