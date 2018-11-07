@@ -2,6 +2,7 @@
 set -x
 PROJECT_DIR=`pwd`
 JSON_OUT=`pwd`/errors.json
+REPORT_PATH="`pwd`/report"
 COMPILER="kcc"
 
 # Prepare to build the project
@@ -44,5 +45,6 @@ cd ${PROJECT_DIR}/rv_build/native/osal/unit-tests
 ./osfilesys-test/osal_filesys_UT
 ./oscore-test/osal_core_UT
 
-# Upload report
-## TODO
+# Generate & Upload report
+touch $JSON_OUT && rv-html-report $JSON_OUT -o $REPORT_PATH
+rv-upload-report $REPORT_PATH
