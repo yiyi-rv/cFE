@@ -2,7 +2,7 @@
 set -x
 PROJECT_DIR=`pwd`
 JSON_OUT=`pwd`/errors.json
-COMPILER="kcc -fissue-report=${JSON_OUT}"
+COMPILER="kcc"
 
 # Prepare to build the project
 rm -rf osal
@@ -12,12 +12,14 @@ git submodule update --recursive
 cd osal/src/os/
 ln -sf posix posix-ng
 
-cd -
+cd $PROJECT_DIR
+cp -a cfe/cmake/sample_defs/ .
 mkdir -p rv_build
 cd rv_build
 
 # Start to build project
-cmake -DCMAKE_C_COMPILER=${COMPILER} -DENABLE_UNIT_TESTS=TRUE --build ../cfe
+export SIMULATION=native
+cmake -DCMAKE_C_COMPILER="${COMPILER}" -DCMAKE_C_FLAGS="-fissue-report=${JSON_OUT}" -DENABLE_UNIT_TESTS=TRUE --build ../cfe
 make -j `nproc` mission-all
 cd native/osal/unit-tests/
 make -j`nproc`
